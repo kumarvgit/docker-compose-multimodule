@@ -1,0 +1,43 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefenitions": [
+        {
+            "name": "client",
+            "image": "kumarvdocker/multi-client",
+            "hostname": "client",
+            "essential": false,
+            "memory": 128
+        },
+        {
+            "name": "server",
+            "image": "kumarvdocker/multi-server",
+            "hostname": "api",
+            "essential": false,
+            "memory": 128
+        },
+        {
+            "name": "worker",
+            "image": "kumarvdocker/multi-worker",
+            "hostname": "worker",
+            "essential": false,
+            "memory": 128
+        },
+        {
+            "name": "nginx",
+            "image": "kumarvdocker/multi-nginx",
+            "hostname": "nginx",
+            "essential": true,
+            "memory": 128,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": [
+                "client",
+                "server"
+            ]
+        }
+    ]
+}
