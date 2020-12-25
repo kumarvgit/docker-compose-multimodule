@@ -1,0 +1,23 @@
+sudo: required
+language: generic
+services: docker
+
+before_install:
+  - docker build -t kumarvdocker/react-test -f ./client/Dockerfile.dev ./client
+  
+script:
+  - docker run -e CI=true kumarvdocker/react-test npm test
+
+# build production grade system
+after_success:
+  - docker build -t kumarvdocker/multi-client ./client
+  - docker build -t kumarvdocker/multi-nginx ./nginx
+  - docker build -t kumarvdocker/multi-server ./server
+  - docker build -t kumarvdocker/multi-worker ./worker
+  # login to docker cli
+  - echo "$DOCKER_PASSWORD" | docker login "$DOCKER_ID" --password-stdin
+  # push to docker hub
+  - docker push kumarvdocker/multi-client
+  - docker push kumarvdocker/multi-nginx
+  - docker push kumarvdocker/multi-server
+  - docker push kumarvdocker/multi-worker
