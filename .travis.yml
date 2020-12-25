@@ -15,7 +15,7 @@ after_success:
   - docker build -t kumarvdocker/multi-server ./server
   - docker build -t kumarvdocker/multi-worker ./worker
   # login to docker cli
-  - echo "$DOCKER_PASSWORD" | docker login "$DOCKER_ID" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # push to docker hub
   - docker push kumarvdocker/multi-client
   - docker push kumarvdocker/multi-nginx
